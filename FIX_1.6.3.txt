@@ -1,0 +1,22 @@
+AERL 1.6.3 - VELOCITY LEGACY ALPHA
+
+Validated directly against current user-provided Rocket League Alpha files:
+
+Boost_AlphaReward_SF.upk
+- AES provider key #1 decrypts a valid Name Table.
+- Velocity upstream rejected it because first chunk offset is DependsOffset - 3.
+- Package uses legacy 36-byte RL compressed-chunk records.
+
+WHEEL_AlphaRim_SF.upk
+- AES provider key #1 decrypts a valid Name Table.
+- Velocity upstream rejected it because first chunk offset is DependsOffset - 4.
+- Package uses standard 24-byte RL compressed-chunk records.
+
+Fixes in the bundled Velocity helper:
+1. bounded +/-16 byte SeekFree first-chunk offset validation;
+2. automatic 24/36-byte RL chunk-record detection;
+3. sanity checks for monotonic/unbounded chunk records;
+4. preserve the donor's detected chunk-record stride when rebuilding its encrypted chunk table;
+5. release aborts if the expected upstream code signatures change.
+
+The generic AERL swap engine is unchanged.

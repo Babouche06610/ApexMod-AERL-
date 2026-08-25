@@ -1,0 +1,36 @@
+AERL 1.2.1 — COMPLETE SAFE BUILD
+
+This archive contains the current complete safe AERL application source and one-file installer pipeline.
+
+REAL MODULES INCLUDED:
+- Home dashboard
+- Garage / local presets
+- Training tracker
+- Freeplay drill timer + safe replay tooling
+- External HUD
+- Live Stats + session history
+- Performance/process monitoring
+- Presets import/export
+- Plugin manifest manager
+- Settings / Stats API configurator
+- Command palette
+- Full Mock Stats stream
+- Safe Mode / crash recovery / logs / tray / startup
+
+IMPORTANT SAFETY BOUNDARY:
+Features that would require anti-cheat bypass, prohibited injection, protected-memory manipulation, server inventory spoofing, rank/MMR/XP/credit modification or competitive automation are deliberately absent. AERL uses local storage, normal Windows APIs and Rocket League's documented local Stats API.
+
+BUILD PUBLIC INSTALLER:
+  build-release.bat
+
+EXPECTED OUTPUT:
+  dist\AERL_Setup_1.2.1.exe
+
+LOCAL COSMETIC ENGINE (1.2.1)
+- Item-to-item local UPK swaps
+- Custom UPK/BNK file application
+- Vanilla backups + SHA-256 verification
+- Restore Selected / Restore All
+- Game-update mismatch protection
+- No injection or memory hooks
+- Experimental third-party file modification; not guaranteed by Epic/Psyonix

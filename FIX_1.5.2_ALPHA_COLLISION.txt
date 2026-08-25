@@ -1,0 +1,15 @@
+AERL 1.5.2 — Alpha Name-Table Collision Fix
+
+This build changes only the package-name collision path that affects Alpha Reward donors.
+Generic cosmetic swaps keep the existing AERL path.
+
+Key change:
+When the target FName already exists inside the donor package, AERL first renames
+that existing name-table entry to a unique FREED... placeholder without changing its
+allocated FString size. It then physically renames the donor root FName to the target.
+This follows the collision strategy described in RLUPKTools and avoids the Header/Body
+desynchronization caused by import/export-only patching.
+
+Primary test:
+Restore All -> Standard -> Gold Rush
+Restore All -> Vortex -> Goldstone

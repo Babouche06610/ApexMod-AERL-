@@ -1,0 +1,16 @@
+AERL 1.4.1 — UI / BACKGROUND / CHUNK-KEY FIX
+
+UI
+- Uses the user-supplied AERL banner as the actual application background.
+- Background visibility raised substantially; dark veil reduced.
+- Main content and Garage cards use translucent glass surfaces.
+- Added dark Windows system popup brushes to prevent white WPF dropdowns.
+- Added a custom dark ChillComboBoxStyle for the Garage category selector.
+- Replaced native-looking white scroll bars with compact purple/cyan scroll thumbs.
+- Swap status now lives in its own wrapped status panel instead of overflowing next to buttons.
+
+UPK
+- Exact key-map entries are now verified against the encrypted Rocket League compressed-chunk table before use.
+- If a cached exact mapping is stale/wrong, AERL safely tests the other known package keys using the same chunk-table verification primitive used by current public RL UPK tooling.
+- Metadata cache marker bumped to v4 so 1.4.1 refreshes current item/key metadata once.
+- This specifically addresses false 'compressed-chunk table invalid' / 'Invalid RL compressed chunk entry' errors caused by decrypting with a stale or incorrect cached key.

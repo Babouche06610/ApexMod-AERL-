@@ -1,0 +1,20 @@
+{
+  "product": "AERL",
+  "release": "1.0.0",
+  "channel": "public-beta",
+  "displayVersion": "1.0.0 Public Beta",
+  "platform": "Windows x64",
+  "languages": [
+    "English",
+    "French"
+  ],
+  "officialDiscord": "https://discord.gg/aerl",
+  "featureStatus": {
+    "client": "public-beta",
+    "garage": "public-beta",
+    "alphaRewards": "work-in-progress",
+    "goalExplosions": "experimental",
+    "freeplay": "public-beta",
+    "discordOAuth": "public-beta"
+  }
+}

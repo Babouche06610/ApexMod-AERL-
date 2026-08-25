@@ -1,0 +1,6 @@
+AERL 1.2.1 — Alpha Reward compatibility fix
+
+- Gold Rush donor now retargets its inherited Boost_Standard reference to the equipped target boost.
+- The UPK rename engine now permits multiple donor aliases to converge on one target name when that duplicate is created during the same swap transaction.
+- Pre-existing target-name collisions in the donor package are still rejected.
+- No process injection, memory hooks, EAC changes, or network manipulation.

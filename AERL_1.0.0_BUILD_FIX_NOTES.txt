@@ -1,0 +1,12 @@
+AERL 1.0.0 PREMIUM FINAL — BUILD FIX
+
+Fixed the six reported compiler errors:
+- DiscordAuthService.cs: added using System.IO for Path/File.
+- OnboardingWindow.xaml.cs: explicitly uses System.Windows.MessageBox.
+- GarageView.xaml.cs: RocketLeagueItem.Name replaced by RocketLeagueItem.Product.
+- Base-item priority now actually applies to the equipped-items list.
+
+Validation:
+- all XAML parsed successfully
+- all JSON parsed successfully
+- no remaining RocketLeagueItem.Name references in GarageView

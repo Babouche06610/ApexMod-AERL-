@@ -1,0 +1,1 @@
+1.2.1 - Fixed smoke-test ILogService implementation after logger overload addition.

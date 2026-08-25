@@ -1,0 +1,6 @@
+AERL 1.5.0 — Discord + native frame polish
+
+- Added clickable official Discord entry in the bottom-left sidebar: https://discord.gg/aerl
+- Uses the Windows default browser via UseShellExecute.
+- Added WPF WindowChrome with zero glass frame to remove the bright native top strip while preserving resizing.
+- Keeps the 1.4.1 background and cosmetic engine changes unchanged.

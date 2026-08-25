@@ -1,0 +1,20 @@
+\
+AERL 1.0.0 — TRUE FILE REPLACEMENT
+
+Alpha Boost:
+  target must already exist:
+  <RocketLeague>\TAGame\CookedPCConsole\Boost_Bubble_SF.upk
+  AERL backs it up, deletes it, then moves the Alpha file into the exact same path.
+  AERL verifies SHA-256 after replacement.
+
+Alpha Wheels:
+  target must already exist:
+  <RocketLeague>\TAGame\CookedPCConsole\Wheel_Vulcan_SF.upk
+  AERL backs it up, deletes it, then moves the Alpha file into the exact same path.
+  AERL verifies SHA-256 after replacement.
+
+Restore:
+  AERL deletes the currently installed file, restores the saved vanilla backup,
+  and verifies SHA-256 after restoration.
+
+AERL will NOT create an Alpha file if the matching Rocket League target file is absent.

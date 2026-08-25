@@ -1,0 +1,8 @@
+AERL 1.0.0 — Discord gate stay-open fix
+
+- Discord bot membership is NOT required for identify + guilds OAuth verification.
+- AERL now uses ShutdownMode=OnExplicitShutdown.
+- DiscordGateWindow becomes the temporary MainWindow during authentication.
+- Failed OAuth / failed guild membership never closes AERL.
+- Closing event is cancelled unless verification succeeded or the user explicitly clicks Close.
+- After successful verification, MainWindow switches to the real AERL client.

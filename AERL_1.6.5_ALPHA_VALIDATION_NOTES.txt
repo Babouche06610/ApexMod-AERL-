@@ -1,0 +1,15 @@
+AERL 1.0.0 — Alpha Engine Validation
+======================================
+Goal: stop shipping crash-prone intermediate Alpha packages.
+
+Changes:
+- Keeps thumbnails vanilla for Alpha swaps.
+- Keeps the existing generic AERL path for already-working cosmetics.
+- Alpha helper build is mandatory; release fails if the helper is missing.
+- Alpha generation is fail-closed: an unsuccessful helper run must never replace a Rocket League package.
+- Version metadata normalized to 1.0.0.
+- The upstream engine is treated as a dependency whose behavior must be validated, not blindly patched from moving source.
+
+Important:
+This build cannot prove in-game compatibility without Rocket League/EAC running on the target Windows machine.
+Use Restore All / Epic Verify before changing builds.

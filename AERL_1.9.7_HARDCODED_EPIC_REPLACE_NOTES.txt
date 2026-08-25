@@ -1,0 +1,23 @@
+\
+AERL 1.0.0 — HARDCODED EPIC REPLACE
+
+No auto-detection for Alpha installs.
+
+Exact folder:
+C:\Program Files\Epic Games\rocketleague\TAGame\CookedPCConsole
+
+Alpha Boost:
+- target: Boost_Bubble_SF.upk
+- clear ReadOnly if needed
+- backup vanilla
+- DELETE target
+- assert target no longer exists
+- write known-good Alpha file
+- SHA256 verify
+- reject if BEFORE == AFTER
+
+Alpha Wheels:
+- target: Wheel_Vulcan_SF.upk
+- same hard replace sequence
+
+Only these 2 Alpha payloads are used.

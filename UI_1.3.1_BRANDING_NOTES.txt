@@ -1,0 +1,7 @@
+AERL 1.4.0 — USER BRANDING INTEGRATION
+
+- Uses the exact user-provided widescreen banner as the embedded default application background.
+- Uses the exact user-provided square artwork as the in-app AERL logo.
+- Converts that same square artwork to a multi-size Windows .ico for AERL.exe and AERL Setup.
+- Existing local cosmetic swap engine is unchanged.
+- Custom %APPDATA%\AERL\Assets\aerl-bg.* still overrides the embedded background when present.

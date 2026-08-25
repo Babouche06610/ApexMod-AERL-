@@ -1,0 +1,15 @@
+AERL 1.0.0 FINAL REWORK
+
+- Version reset/finalized to 1.0.0.
+- Safe Swap compatibility gate expanded beyond Goal Explosions:
+  Goal Explosion, car/body/vehicle, Engine Audio and Player Anthem cannot use the generic
+  UPK header rebuilder. They are blocked BEFORE disk writes and require exact prebuilt packages.
+- Existing Alpha Boost / Alpha Wheels exact replacement system retained.
+- Base donor priority added:
+  Standard -> Classic -> Default -> Standard variants -> OEM -> other items.
+  Goal Explosion specifically prioritizes Classic.
+- Existing old Goal Explosion crash-loop auto-recovery retained.
+- Window chrome pass:
+  clearer minimize/maximize/close glyphs where custom chrome is present;
+  minimize handlers are forced to WindowState.Minimized instead of Close().
+- Added reusable high-contrast FinalCaptionButton style for caption controls.

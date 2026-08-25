@@ -1,0 +1,24 @@
+AERL 1.5.0
+==========
+
+CRYPTO / UPK
+- Fixes the failure shown as: "AERL could not verify an AES key for Boost_AlphaReward_SF.upk".
+- AERL now resolves AES key + Rocket League compression metadata as one verified pair.
+- Tries the canonical UE3 metadata position first, then compatible nearby cooked-package prefix layouts.
+- A candidate layout is accepted only when AES decryption proves the RL chunk table starts at DependsOffset.
+- Applies the same adaptive resolver to Alpha Reward packages, Goldstone and complex goal explosions such as Tactical Nuke.
+- Metadata cache generation bumped to v5 so old key/layout cache markers are not reused.
+
+UI / COMMUNITY
+- Keeps the full 1.4.2 custom title-bar/frame fix.
+- Keeps the official Discord button: https://discord.gg/aerl
+- Keeps the supplied AERL background and application icon.
+
+AUTHOR / PUBLISHER
+- Author: Babouche (AMDG)
+- Company/Publisher: Babouche (AMDG)
+- Copyright: © 2026 Babouche (AMDG)
+- release.ps1 supports optional real Windows Authenticode signing through:
+    AERL_SIGN_CERT_PFX
+    AERL_SIGN_CERT_PASSWORD
+  A real certificate is required for Windows to show a cryptographically verified publisher.

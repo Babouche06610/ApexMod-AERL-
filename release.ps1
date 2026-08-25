@@ -1,0 +1,219 @@
+$ErrorActionPreference = "Stop"
+
+$Root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$AppProject = Join-Path $Root "src\AERL.App\AERL.App.csproj"
+$Artifacts = Join-Path $Root "artifacts\app"
+$Dist = Join-Path $Root "dist"
+$Iss = Join-Path $Root "installer\AERL.iss"
+function Find-SignTool {
+    $cmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+    if ($cmd) { return $cmd.Source }
+    $roots = @(
+        "${env:ProgramFiles(x86)}\Windows Kits\10\bin",
+        "$env:ProgramFiles\Windows Kits\10\bin"
+    ) | Where-Object { $_ -and (Test-Path $_) }
+    foreach ($base in $roots) {
+        $candidate = Get-ChildItem $base -Filter signtool.exe -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } |
+            Sort-Object FullName -Descending | Select-Object -First 1
+        if ($candidate) { return $candidate.FullName }
+    }
+    return $null
+}
+
+function Sign-AerlBinary([string]$Path) {
+    $pfx = $env:AERL_SIGN_CERT_PFX
+    if ([string]::IsNullOrWhiteSpace($pfx)) {
+        Write-Host "Authenticode: no certificate configured; publisher metadata is Babouche (AMDG), binary remains cryptographically unsigned." -ForegroundColor DarkYellow
+        return
+    }
+    if (-not (Test-Path $pfx)) { throw "AERL_SIGN_CERT_PFX points to a missing certificate: $pfx" }
+    $signtool = Find-SignTool
+    if (-not $signtool) { throw "A signing certificate was configured but signtool.exe was not found." }
+    $args = @('sign','/fd','SHA256','/f',$pfx)
+    if (-not [string]::IsNullOrWhiteSpace($env:AERL_SIGN_CERT_PASSWORD)) { $args += @('/p',$env:AERL_SIGN_CERT_PASSWORD) }
+    $args += @('/tr','http://timestamp.digicert.com','/td','SHA256',$Path)
+    & $signtool @args
+    if ($LASTEXITCODE -ne 0) { throw "Authenticode signing failed for $Path" }
+    Write-Host "Authenticode signed: $Path" -ForegroundColor Green
+}
+
+
+
+function Find-Python {
+    $py = Get-Command python.exe -ErrorAction SilentlyContinue
+    if ($py) { return $py.Source }
+    $launcher = Get-Command py.exe -ErrorAction SilentlyContinue
+    if ($launcher) { return $launcher.Source }
+    return $null
+}
+
+function Build-AlphaEngine {
+    $alphaDir = Join-Path $Root "src\AERL.App\AlphaEngine"
+    $buildDir = Join-Path $Root ".build\alpha-engine"
+    $venv = Join-Path $buildDir "venv"
+    New-Item -ItemType Directory -Force -Path $alphaDir | Out-Null
+    New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+
+    $python = Find-Python
+    if (-not $python) {
+        throw @"
+Python 3.11+ is required ONLY to build the bundled Alpha Compatibility Engine.
+Install official Python for Windows (with Add Python to PATH), then rerun build-release.bat.
+End users of AERL will NOT need Python.
+"@
+    }
+
+    $sources = @{
+        "rl_asset_swapper.py" = "https://raw.githubusercontent.com/bitsfdb/VelocityRL/main/python/rl_asset_swapper.py";
+        "rl_upk_editor.py" = "https://raw.githubusercontent.com/bitsfdb/VelocityRL/main/python/rl_upk_editor.py";
+        "items.json" = "https://raw.githubusercontent.com/bitsfdb/VelocityRL/main/python/items.json";
+        "keys.txt" = "https://raw.githubusercontent.com/bitsfdb/VelocityRL/main/python/keys.txt";
+        "keys_map.json" = "https://raw.githubusercontent.com/bitsfdb/VelocityRL/main/python/keys_map.json";
+        "LICENSE_VELOCITYRL.txt" = "https://raw.githubusercontent.com/bitsfdb/VelocityRL/main/LICENSE";
+    }
+    Write-Host "Alpha engine: downloading pinned upstream source files..." -ForegroundColor Gray
+    foreach ($name in $sources.Keys) {
+        Invoke-WebRequest -UseBasicParsing -Uri $sources[$name] -OutFile (Join-Path $buildDir $name)
+    }
+
+    # AERL 1.0.0: Alpha Rewards use the native strict in-place engine.
+    # IMPORTANT: VelocityRL's public keys.txt can lag behind Rocket League legacy/Alpha packages.
+    # AERL ships an extended provider that has been validated against current Alpha Reward
+    # packages. Merge both providers so the Alpha helper sees every key AERL itself can use.
+    $velocityKeys = Join-Path $buildDir "keys.txt"
+    $aerlKeys = Join-Path $Root "src\AERL.App\RuntimeData\keys.txt"
+    if (-not (Test-Path $aerlKeys)) { throw "AERL bundled AES provider is missing: $aerlKeys" }
+    $merged = @(
+        Get-Content $velocityKeys
+        Get-Content $aerlKeys
+    ) | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith('#') } | Sort-Object -Unique
+    Set-Content -Path $velocityKeys -Value $merged -Encoding ASCII
+
+    # Known Alpha Reward package key required by current legacy Alpha packages.
+    # This is a provider integrity check only; it does not touch Rocket League or EAC.
+    $alphaKnownKey = "x99rEyUqzHFHu1HJitfjS3/lALd/pfqyk+LyTmsX53k="
+    if (-not ($merged -contains $alphaKnownKey)) {
+        throw "Merged Alpha provider is missing the validated Alpha Reward AES key."
+    }
+    if ($merged.Count -lt 1000) { throw "Merged Alpha provider is unexpectedly small: $($merged.Count) keys." }
+    Write-Host "Alpha provider merged: $($merged.Count) unique keys" -ForegroundColor Gray
+
+    if (-not (Test-Path (Join-Path $venv "Scripts\python.exe"))) {
+        if ([System.IO.Path]::GetFileName($python).ToLowerInvariant() -eq 'py.exe') { & $python -3 -m venv $venv }
+        else { & $python -m venv $venv }
+        if ($LASTEXITCODE -ne 0) { throw "Could not create the Alpha Engine build venv." }
+    }
+    $vpy = Join-Path $venv "Scripts\python.exe"
+    & $vpy -m pip install --disable-pip-version-check --quiet --upgrade pip
+    & $vpy -m pip install --disable-pip-version-check --quiet pyinstaller cryptography pillow
+    if ($LASTEXITCODE -ne 0) { throw "Could not install Alpha Engine build dependencies." }
+
+    $distTmp = Join-Path $buildDir "dist"
+    $workTmp = Join-Path $buildDir "pyinstaller-work"
+    $specTmp = Join-Path $buildDir "spec"
+    if (Test-Path $distTmp) { Remove-Item $distTmp -Recurse -Force }
+    & $vpy -m PyInstaller `
+        --noconfirm --clean --onefile --console `
+        --name "AERL.AlphaEngine" `
+        --distpath $distTmp --workpath $workTmp --specpath $specTmp `
+        --hidden-import rl_upk_editor `
+        --collect-all cryptography --collect-all PIL `
+        --add-data "$(Join-Path $buildDir 'rl_upk_editor.py');." `
+        --add-data "$(Join-Path $buildDir 'keys_map.json');." `
+        (Join-Path $buildDir "rl_asset_swapper.py")
+    if ($LASTEXITCODE -ne 0) { throw "VelocityRL Alpha Engine PyInstaller build failed." }
+
+    Copy-Item (Join-Path $distTmp "AERL.AlphaEngine.exe") (Join-Path $alphaDir "AERL.AlphaEngine.exe") -Force
+    Copy-Item (Join-Path $buildDir "items.json") (Join-Path $alphaDir "items.json") -Force
+    Copy-Item (Join-Path $buildDir "keys.txt") (Join-Path $alphaDir "keys.txt") -Force
+    Copy-Item (Join-Path $buildDir "LICENSE_VELOCITYRL.txt") (Join-Path $alphaDir "LICENSE_VELOCITYRL.txt") -Force
+
+    $alphaKeyCount = (Get-Content (Join-Path $alphaDir "keys.txt") | Where-Object { $_.Trim() -and -not $_.TrimStart().StartsWith('#') }).Count
+    if ($alphaKeyCount -lt 500) { throw "VelocityRL Alpha provider looks incomplete: $alphaKeyCount keys." }
+    Write-Host "Alpha Compatibility Engine ready ($alphaKeyCount provider keys)." -ForegroundColor Green
+}
+
+Write-Host "" 
+Write-Host "AERL RELEASE BUILDER" -ForegroundColor Cyan
+Write-Host "====================" -ForegroundColor DarkCyan
+
+if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
+    throw "The .NET 8 SDK is required to build AERL. Install it, then run release.ps1 again."
+}
+
+$dotnetVersion = (& dotnet --version).Trim()
+Write-Host "[1/6] .NET SDK: $dotnetVersion" -ForegroundColor Gray
+
+if (Test-Path $Artifacts) { Remove-Item $Artifacts -Recurse -Force }
+if (Test-Path $Dist) { Remove-Item $Dist -Recurse -Force }
+New-Item -ItemType Directory -Force -Path $Artifacts | Out-Null
+New-Item -ItemType Directory -Force -Path $Dist | Out-Null
+
+$bundledKeys = Join-Path $Root "src\AERL.App\RuntimeData\keys.txt"
+if (-not (Test-Path $bundledKeys)) { throw "Bundled AES provider is missing: $bundledKeys" }
+$keyCount = (Get-Content $bundledKeys | Where-Object { $_.Trim() -and -not $_.TrimStart().StartsWith('#') }).Count
+if ($keyCount -lt 1000) { throw "Bundled AES provider is truncated: $keyCount keys (expected at least 1000)." }
+Write-Host "AES provider: $keyCount bundled keys" -ForegroundColor Gray
+Write-Host "[2/6] Alpha Rewards: native strict in-place engine." -ForegroundColor Green
+Write-Host "[2/6] Running AERL smoke tests..." -ForegroundColor Cyan
+& dotnet run --project (Join-Path $Root "tests\AERL.SmokeTests\AERL.SmokeTests.csproj") -c Release
+if ($LASTEXITCODE -ne 0) { throw "AERL smoke tests failed." }
+
+Write-Host "[3/6] Publishing AERL for Windows x64..." -ForegroundColor Cyan
+& dotnet publish $AppProject `
+    -c Release `
+    -r win-x64 `
+    --self-contained true `
+    -o $Artifacts `
+    /p:DebugType=None `
+    /p:DebugSymbols=false `
+    /p:PublishReadyToRun=true
+if ($LASTEXITCODE -ne 0) { throw "AERL publish failed." }
+
+$exe = Join-Path $Artifacts "AERL.exe"
+if (-not (Test-Path $exe)) { throw "Publish succeeded but AERL.exe was not found." }
+Write-Host "[4/6] Application payload ready." -ForegroundColor Green
+Sign-AerlBinary $exe
+
+$possibleIscc = @(
+    "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+    "$env:ProgramFiles\Inno Setup 6\ISCC.exe",
+    "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe"
+) | Where-Object { $_ -and (Test-Path $_) }
+
+$iscc = $possibleIscc | Select-Object -First 1
+if (-not $iscc) {
+    $cmd = Get-Command ISCC.exe -ErrorAction SilentlyContinue
+    if ($cmd) { $iscc = $cmd.Source }
+}
+
+if (-not $iscc) {
+    throw @"
+Inno Setup 6 was not found.
+Install Inno Setup 6, then rerun release.ps1.
+The public release will be generated as one single file: dist\AERL_Setup_1.0.0_Public_Beta.exe
+"@
+}
+
+Write-Host "[5/6] Building the single-file installer..." -ForegroundColor Cyan
+& $iscc $Iss
+if ($LASTEXITCODE -ne 0) { throw "Installer compilation failed." }
+
+$setup = Join-Path $Dist "AERL_Setup_1.0.0_Public_Beta.exe"
+if (-not (Test-Path $setup)) { throw "Installer compiler finished but setup EXE was not found." }
+
+Sign-AerlBinary $setup
+$hash = (Get-FileHash -Path $setup -Algorithm SHA256).Hash
+Write-Host "[6/6] Done." -ForegroundColor Green
+Write-Host "" 
+Write-Host "PUBLIC FILE:" -ForegroundColor Yellow
+Write-Host "  $setup" -ForegroundColor White
+Write-Host "SHA-256:" -ForegroundColor Yellow
+Write-Host "  $hash" -ForegroundColor White
+Write-Host "" 
+Write-Host "Give users ONLY AERL_Setup_1.0.0_Public_Beta.exe." -ForegroundColor Cyan
+
+
+
+Write-Host "[AERL] Alpha backend: native strict in-place UPK retargeting." -ForegroundColor Green

@@ -1,0 +1,6 @@
+AERL 1.2.1 build fix
+
+- Added ILogService.Error(string, Exception) overload.
+- FileLogService now logs exception message + stack trace.
+- Fixes CS1501 in LocalCosmeticSwapService and GarageView exception handlers.
+- Smoke-test gate remains enabled before publish.

@@ -1,0 +1,8 @@
+AERL 1.0.0 — GOAL EXPLOSIONS
+
+- Goal Explosion swaps are no longer intentionally blocked by AERL.
+- Classic remains the preferred/base item where the existing Garage logic selects it.
+- Selecting/applying a Goal Explosion displays a warning:
+  "Goal Explosion swaps are experimental and may cause Rocket League to crash."
+- User can Continue or Cancel.
+- Existing file/rebuild validation remains enabled.

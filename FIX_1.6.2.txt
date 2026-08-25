@@ -1,0 +1,16 @@
+AERL 1.6.3 - LEGACY ALPHA FIX
+
+Root cause reproduced with the user's current Rocket League Alpha packages:
+- Boost_AlphaReward_SF.upk: first RL compressed chunk offset = DependsOffset - 3
+- WHEEL_AlphaRim_SF.upk: first RL compressed chunk offset = DependsOffset - 4
+
+VelocityRL upstream verify_decryptor/unpack_package currently require exact equality and therefore
+reject the correct AES key as "Unknown Decryption key" before any swap is attempted.
+
+This build patches ONLY the bundled Alpha helper at build time:
+- requires a sane chunk count (1..256)
+- accepts a tightly bounded <=16-byte difference between first chunk offset and DependsOffset
+- applies the same bounded check during unpack_package
+- aborts the release if upstream source changes and the expected validation lines are no longer present
+
+Generic AERL swaps are unchanged.

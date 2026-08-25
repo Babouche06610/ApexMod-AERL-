@@ -1,0 +1,15 @@
+AERL 1.0.0 — DISCORD READY
+
+Discord OAuth application:
+1539959425236865114
+
+Required AERL server:
+1539616936525176963
+
+Invite:
+https://discord.gg/aerl
+
+Redirect:
+http://127.0.0.1:53682/callback/
+
+The client now ships preconfigured. End users do not need to enter IDs or settings.

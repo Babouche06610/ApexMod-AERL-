@@ -1,0 +1,8 @@
+AERL 1.4.0 CHILL UI
+- Chill animated ambient gradient background
+- Optional user background image with protected contrast overlay
+- New glass-like sidebar and content surface
+- Explicit ComboBox/ListBox/TextBox colors (fixes invisible dropdown text)
+- Language selection remains the first onboarding action
+- Softer hover/press animations
+- Existing local-cosmetic engine left unchanged

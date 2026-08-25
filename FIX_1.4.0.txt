@@ -1,0 +1,19 @@
+AERL 1.4.0 — FULL UPK ENGINE
+
+Fixes the structural limitation behind Alpha Reward donors and complex packages such as Tactical Nuke.
+
+The old header-only swap engine has been replaced. AERL now:
+- decrypts the complete Rocket League encrypted header with the donor's exact package key;
+- parses Rocket League's 64-bit compressed chunk table;
+- inflates all ZLIB package chunks;
+- rebuilds the UE3 name/import/export table layout;
+- adjusts every affected 64-bit export serial offset when names change size;
+- recompresses every package chunk;
+- rebuilds compressed offsets/sizes and the encrypted chunk table;
+- encrypts the result with the exact key of the item actually equipped in Rocket League;
+- decrypts and decompresses its own generated package again before reporting success.
+
+No Alpha-specific fallback-name hack remains in the swap engine.
+
+Safety behavior is unchanged: Rocket League must be closed for Apply/Restore, backups are mandatory,
+and the engine performs file-only local operations. It does not inject into Rocket League or interact with EAC.

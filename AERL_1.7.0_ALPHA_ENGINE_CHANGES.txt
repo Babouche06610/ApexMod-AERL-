@@ -1,0 +1,6 @@
+AERL 1.0.0 — CLEAN UPSTREAM ALPHA ENGINE
+- Removed AERL custom VelocityRL chunk parser/serializer modifications.
+- VelocityRL current Python parser/rebuilder is used unchanged.
+- Added keys_map.json download AND PyInstaller bundling so upstream _get_exact_key() works at runtime.
+- Kept merged keys.txt fallback, backup/restore and Alpha thumbnails disabled.
+- Non-Alpha swaps unchanged.

@@ -1,0 +1,27 @@
+AERL 1.5.0 — AURORA / ALPHA SEEKFREE TEST BUILD
+
+Cosmetic engine
+- Returns to the conservative header-only swap path used by the current VelocityRL implementation.
+- Does NOT rebuild/recompress donor body chunks.
+- Bundles the full current AES provider (keys.txt) in the installer payload.
+- Uses exact package keys_map first.
+- Exact mapped keys use relaxed SeekFree validation (sane chunk count), matching current upstream behavior.
+- Candidate fallback keys use strict depends_offset validation.
+- Build and runtime reject a truncated AES provider.
+
+Reliability
+- Runtime metadata cache bumped to v6.
+- Stale running.lock no longer permanently forces Safe Mode.
+- Existing backup/restore + SHA-256 transaction remains unchanged.
+- Smoke tests verify bundled provider size and the relaxed SeekFree key-probe behavior.
+
+UI
+- Keeps AERL branded background, custom frame, Discord sidebar link.
+- Adds a one-time premium Discord invite popup.
+- Publisher metadata: Babouche (AMDG).
+
+TEST PRIORITY
+1. Rainbow -> (Alpha Reward) Gold Rush
+2. OEM -> (Alpha Reward) Goldstone
+3. A normal goal explosion -> Tactical Nuke
+4. Verify normal swaps still behave exactly as in the previously working builds.

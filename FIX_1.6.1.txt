@@ -1,0 +1,20 @@
+AERL 1.6.3 — VELOCITY ALPHA KEYFIX
+
+Root cause confirmed with user-supplied Rocket League Alpha packages:
+- Boost_AlphaReward_SF.upk
+- Boost_AlphaReward_T_SF.upk
+- WHEEL_AlphaRim_SF.upk
+- WHEEL_AlphaRim_T_SF.upk
+
+All four decrypt successfully with the AERL bundled provider key:
+x99rEyUqzHFHu1HJitfjS3/lALd/pfqyk+LyTmsX53k=
+
+AERL 1.6.0 accidentally built the Velocity helper with VelocityRL's separate keys.txt,
+while AERL's own RuntimeData/keys.txt contained the working Alpha key.
+The helper therefore reported "Unknown Decryption key" even though AERL already had it.
+
+1.6.3 merges VelocityRL keys + AERL RuntimeData keys before building AERL.AlphaEngine.exe,
+deduplicates them, verifies the known Alpha Reward key is present, and refuses release if the
+merged provider is unexpectedly small.
+
+No injection, process memory access, or EAC modification is added.

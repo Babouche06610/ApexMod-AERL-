@@ -1,0 +1,9 @@
+AERL 1.0.0 — Tutorial + Goal Explosion build fix
+
+- Fixed compile error: removed nonexistent CategoryComboBox reference.
+- Goal Explosion warning now uses the actual selected RocketLeagueItem.Slot.
+- Goal Explosions remain allowed after explicit warning.
+- Tutorial now appears once for AERL 1.0.0 even if an older build already set OnboardingCompleted.
+- Tutorial completion marker:
+  <AERL DataDirectory>\Config\tutorial-1.0.0.seen
+- Added a permanent Tutorial button in the sidebar so users can reopen the guide anytime.

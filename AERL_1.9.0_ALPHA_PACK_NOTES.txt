@@ -1,0 +1,16 @@
+AERL 1.0.0 - ALPHA REWARDS PACK
+
+Dedicated Alpha Rewards section added to Garage.
+The four supplied known-good UPKs are copied byte-for-byte; AERL does not parse, decrypt, rebuild or rename them.
+Install mapping:
+- Boost_Bubble_SF.upk -> equip Bubbles -> Gold Rush visual
+- WHEEL_Star_SF.upk -> equip Star -> Goldstone visual
+- WHEEL_Atlantis_SF.upk -> equip Atlantis -> Goldstone visual
+- Wheel_Vulcan_SF.upk -> equip Vulcan -> Goldstone visual
+
+Original files are backed up once before replacement and can be restored from the same panel.
+
+Boost_Bubble_SF.upk  SHA256 82bb0156f6175bae6bdc8f7ff198c9254e23e6bf7ec63647ea112a99150b5e9a  376214 bytes
+WHEEL_Star_SF.upk  SHA256 4e253e6d8eb0a18b5d68eb46bb773a5275fea93a3bf5f634c60ca571d0c1d49b  738325 bytes
+WHEEL_Atlantis_SF.upk  SHA256 5a83d06038846145be5204eab500759ef12b2ad98043a16183fcec0414a2b472  738325 bytes
+Wheel_Vulcan_SF.upk  SHA256 aeddcb3f1e13cd88a864eeaeaa7073e5b93c3b3fa764188a281c0e26d33bedc1  738325 bytes

@@ -1,0 +1,6 @@
+AERL 1.5.1 ALPHA COMPAT TEST
+- Generic swaps kept on the existing path.
+- Exact keys_map entries are authoritative.
+- Alpha packages with a target-name collision use object-reference retargeting instead of globally destroying the fallback name.
+- Primary tests: Standard -> Gold Rush and Vortex -> Goldstone.
+- Restore All before changing AERL versions.

@@ -1,0 +1,6 @@
+AERL 1.0.0 ALPHA CHOOSER
+Alpha Boost: installs only Boost_Bubble_SF.upk; equip Bubbles.
+Alpha Wheels: installs only Wheel_Vulcan_SF.upk; equip Falco (internally Vulcan).
+Separate restore buttons. User-provided images embedded.
+Boost SHA256 82bb0156f6175bae6bdc8f7ff198c9254e23e6bf7ec63647ea112a99150b5e9a
+Wheels SHA256 aeddcb3f1e13cd88a864eeaeaa7073e5b93c3b3fa764188a281c0e26d33bedc1

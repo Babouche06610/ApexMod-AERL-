@@ -1,0 +1,11 @@
+\
+AERL 1.0.0 — ADMIN TRUE REPLACE
+
+- AERL.exe requests Administrator privileges.
+- Active Rocket League installation is resolved from a real RocketLeague.exe + CookedPCConsole pair.
+- Explicit Epic default path checked:
+  C:\Program Files\Epic Games\rocketleague
+- Alpha install refuses to add a missing target.
+- Install: backup -> delete original -> move modded file into exact path -> SHA256 verify.
+- Restore: delete current -> move vanilla backup into exact path -> SHA256 verify.
+- UI status reports exact PATH plus BEFORE/AFTER hashes.

@@ -1,0 +1,8 @@
+AERL 1.0.0 — ALPHA STRICT IN-PLACE
+- Velocity/Python Alpha runtime removed.
+- Alpha swaps never rebuild name/import/export/chunk tables and never resize the encrypted header.
+- AERL tests the requested base first, then automatically picks a structurally compatible installed base.
+- Goldstone priority: Vortex, OEM, Stern, Cristiano, Dieci.
+- Gold Rush priority: Standard, Sparkles, Ion, Flamethrower, Rainbow, Thermal.
+- UI displays the actual item that must be equipped.
+- Non-Alpha swap path unchanged.

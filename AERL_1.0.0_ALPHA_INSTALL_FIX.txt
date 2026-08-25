@@ -1,0 +1,9 @@
+AERL 1.0.0 — ALPHA INSTALL FIX
+
+- Fixed false FILE DID NOT CHANGE errors.
+- Exact Alpha payload already present = successful "Already installed" state.
+- Vanilla backup is never created from a file already matching the Alpha payload.
+- Polluted legacy Alpha backup can be repaired from Backups\Originals.
+- Install sequence: write temp -> hash temp -> delete target -> move temp -> hash target.
+- Restore rejects a backup that is actually the Alpha payload.
+- Alpha UI no longer exposes raw paths, hashes or internal exception text.

@@ -1,0 +1,35 @@
+AERL 1.0.0 — PREMIUM FINAL
+
+UI
+- Refined title-bar buttons with high-contrast rounded hover states.
+- Minimize now always minimizes the window instead of hiding/closing it.
+- Reduced-motion setting is respected by page transitions.
+- Discord profile name/avatar displayed in the sidebar after authentication.
+- Discord community popup appears on every normal launch.
+
+FIRST LAUNCH
+- Four-step onboarding:
+  1. language + independent-software notice
+  2. Rocket League detection
+  3. Alpha Boost / Alpha Wheels tutorial
+  4. Garage/restore + Discord account explanation
+
+DISCORD ACCOUNT GATE
+- OAuth2 Authorization Code + PKCE.
+- No Discord password and no client secret stored in AERL.
+- identify + guilds scopes only.
+- Membership in discord.gg/aerl is verified before the main client opens.
+- User avatar and display name are read from the authenticated Discord account.
+- Requires the public AERL Discord Application ID in RuntimeData/discord-auth.json.
+
+REALTIME / FREEPLAY
+- Home Rocket League refresh increased from 2 s to 750 ms.
+- Freeplay adds a 650 ms live connection strip for game process, Stats API and live state.
+- Launch Rocket League and open the replay folder directly from Freeplay.
+- Existing replay commands remain restricted by their previous safeguards.
+
+LEGAL
+- DISCLAIMER.md added.
+- Onboarding requires acknowledgement that AERL is independent and not affiliated with
+  Psyonix, Epic Games or Discord.
+- Settings repeats the affiliation notice and Discord OAuth information.

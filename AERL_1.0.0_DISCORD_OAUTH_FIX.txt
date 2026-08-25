@@ -1,0 +1,22 @@
+AERL 1.0.0 — DISCORD OAUTH FIX
+
+- Browser success page is now shown ONLY after:
+  1. OAuth callback validation
+  2. authorization-code -> access-token exchange
+  3. /users/@me profile read
+  4. /users/@me/guilds membership verification
+  5. exact Guild ID 1539616936525176963 found
+
+- Browser now shows the real verification result instead of saying "Discord connected"
+  immediately after receiving an OAuth code.
+
+- Discord guilds are explicitly paginated (200 per request).
+
+- Gate does not close when token exchange, profile read, guild read or membership validation fails.
+  It shows the exact error and changes the button to "Retry Discord".
+
+- Join button opens discord.gg/aerl and keeps the gate open.
+
+- Discord avatar download failure no longer blocks login.
+
+- The main client opens only after verified membership.

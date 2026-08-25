@@ -1,0 +1,9 @@
+AERL 1.0.0 — GOAL EXPLOSION CRASH GUARD
+
+Concrete fix:
+- Goal Explosion catalog swaps no longer call UpkHeaderSwapEngine.BuildSwap().
+- The block happens before backup/write, so selecting a Goal Explosion cannot modify Rocket League files.
+- On AERL startup, legacy active Goal Explosion swaps created by previous AERL builds are automatically restored from AERL's vanilla backup when available.
+- If an old unsafe Goal Explosion state has no backup, its stale state is removed; Epic Verify Files can restore the game file.
+- Custom Asset remains available for an already-prepared exact replacement Goal Explosion .upk.
+- Alpha Boost / Alpha Wheels code is unchanged in this build.

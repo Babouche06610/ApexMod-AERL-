@@ -1,0 +1,6 @@
+AERL 1.0.0
+- Fixed Garage instant crash caused by unresolved StaticResource 'CardStyle'.
+- Alpha Rewards card now uses the same explicit border styling as the other Garage cards.
+- Garage Loaded initialization is exception-safe; future initialization failures are displayed/logged instead of terminating AERL.
+- Alpha Pack logic and the four known-good UPKs are unchanged.
+- Remaining Garage StaticResource references not defined locally/App.xaml: []

@@ -1,0 +1,7 @@
+AERL 1.2.1 - exact-key cosmetic swap fix
+
+- Replaced candidate AES-key guessing with VelocityRL exact package -> key metadata.
+- Runtime metadata now uses VelocityRL items.json + keys_map.json in a fresh v2 cache.
+- Every generated UPK is decrypted again with the target package key before AERL writes it.
+- AERL verifies target-retargeted names are present, preventing false "Apply succeeded" states.
+- No process injection, memory editing, EAC disabling or EAC interaction.

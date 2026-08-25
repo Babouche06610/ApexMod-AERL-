@@ -1,0 +1,8 @@
+AERL 1.0.0 - VELOCITY BUILD PATCH
+
+Fixes a build-only failure in 1.6.3:
+- VelocityRL currently calls parse_rl_compressed_chunks() and serialize_rl_chunk_table() from the same module.
+- AERL 1.6.3's release guard only recognized the older module-qualified upk.* form.
+- 1.0.0 recognizes both forms with bounded regex checks and still refuses unknown layouts.
+- Alpha AES provider merge, legacy +/-16 SeekFree offset support, and 24/36-byte chunk-layout support remain enabled.
+- Runtime/version labels updated to 1.0.0.

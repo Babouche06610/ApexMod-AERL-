@@ -1,0 +1,8 @@
+AERL 1.6.3 VELOCITY ALPHA ENGINE
+
+- Generic cosmetic swaps remain on AERL's existing engine.
+- Alpha Reward donors (Gold Rush/Goldstone) route to a standalone helper built directly from VelocityRL's current Python swap engine.
+- The helper is compiled during release.ps1 with PyInstaller and included in the final AERL installer. End users do not need Python.
+- AERL stages the generated package, validates output exists/is non-trivial, then atomically installs it after its normal vanilla backup.
+- Thumbnails are disabled for Alpha tests to reduce crash surface.
+- Restore All remains the recovery path.
